@@ -76,6 +76,29 @@ namespace WebApplication3.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+        [HttpPatch]
+        public async Task<IActionResult> Patch([FromBody] Auto auto)
+        {
+            if (auto == null)
+            {
+                return BadRequest();
+            }
+
+            var response = await _context.Autos.FindAsync(auto.Id);
+
+            if(response == null)
+            {
+                return NotFound();
+            }
+
+            response.Color = auto.Color;
+            response.Cost = auto.Cost;
+
+            _context.Autos.Update(auto);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
 
     }
 }
